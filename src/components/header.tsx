@@ -2,6 +2,7 @@ import Link from "next/link"
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server"
 import { RegisterLink, LoginLink, LogoutLink } from "@kinde-oss/kinde-auth-nextjs/server"
 import { Button } from "@/components/ui/button"
+import Image from "next/image"
 
 export async function Header() {
   const { getUser } = getKindeServerSession()
@@ -15,7 +16,7 @@ export async function Header() {
       <div className="container flex items-center justify-between">
         <Link href="/" className="flex items-center gap-2">
           <div className="relative w-10 h-10 bg-eco-green rounded-full flex items-center justify-center">
-            <span className="text-white font-bold text-lg">E</span>
+            <Image src={'/ecoswap-logo.jpeg'} alt="Logo" width={250} height={250} className="rounded-full" />
             <div
               className="absolute -top-1 -right-1 w-4 h-4 bg-neon-pink rounded-full"
               style={{ animation: "pulse 2s infinite" }}
