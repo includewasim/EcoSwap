@@ -1,0 +1,82 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider        = "prisma-client-js"
+  // Adding this line to avoid file locking issues
+  previewFeatures = ["interactiveTransactions"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String        @id
+  email        String?       @unique
+  firstName    String?
+  lastName     String?
+  profileImage String?
+  items        Item[]
+  swapRequests SwapRequest[] @relation("RequestedBy")
+  swapOffers   SwapRequest[] @relation("OfferedTo")
+  impactPoints Int           @default(0)
+  badges       UserBadge[]
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+}
+
+model Item {
+  id             String        @id @default(cuid())
+  title          String
+  description    String
+  condition      String
+  category       String
+  tags           String[]
+  images         String[]
+  userId         String
+  user           User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  latitude       Float?
+  longitude      Float?
+  isAvailable    Boolean       @default(true)
+  swapRequests   SwapRequest[] @relation("ItemRequested")
+  offeredInSwaps SwapRequest[] @relation("ItemOffered")
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+}
+
+model SwapRequest {
+  id            String    @id @default(cuid())
+  requesterId   String
+  requester     User      @relation("RequestedBy", fields: [requesterId], references: [id])
+  receiverId    String
+  receiver      User      @relation("OfferedTo", fields: [receiverId], references: [id])
+  itemId        String
+  item          Item      @relation("ItemRequested", fields: [itemId], references: [id])
+  offeredItemId String?
+  offeredItem   Item?     @relation("ItemOffered", fields: [offeredItemId], references: [id])
+  status        String    @default("pending") // pending, accepted, rejected, completed
+  messages      Message[]
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model Message {
+  id            String      @id @default(cuid())
+  content       String
+  swapRequestId String
+  swapRequest   SwapRequest @relation(fields: [swapRequestId], references: [id], onDelete: Cascade)
+  senderId      String
+  createdAt     DateTime    @default(now())
+}
+
+model UserBadge {
+  id       String   @id @default(cuid())
+  userId   String
+  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  badgeId  String
+  earnedAt DateTime @default(now())
+
+  @@unique([userId, badgeId])
+}
