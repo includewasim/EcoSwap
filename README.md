@@ -3,17 +3,7 @@
   <h1>EcoSwap</h1>
   <p><strong>A sustainable goods marketplace for a greener future</strong></p>
   
-  <p>
-    <a href="#features">Features</a> •
-    <a href="#tech-stack">Tech Stack</a> •
-    <a href="#demo">Demo</a> •
-    <a href="#installation">Installation</a> •
-    <a href="#environment-variables">Environment Variables</a> •
-    <a href="#project-structure">Project Structure</a> •
-    <a href="#future-work">Future Work</a> •
-    <a href="#contributing">Contributing</a> •
-    <a href="#license">License</a>
-  </p>
+  
   
   <div>
     <img src="https://img.shields.io/badge/next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white" alt="Next.js" />
